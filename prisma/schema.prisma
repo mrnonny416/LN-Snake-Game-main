@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id          Int      @id @default(autoincrement())
+  playerId    String   @map("player_id") @db.VarChar(255)
+  paymentHash String   @map("payment_hash") @db.VarChar(255)
+  name        String?  @db.VarChar(100)
+  createdAt   DateTime @default(now())
+
+  @@unique([playerId, paymentHash])
+  @@index([playerId])
+  @@index([paymentHash])
+  @@index([name])
+}
+
+model Score {
+  id          Int      @id @default(autoincrement())
+  playerId    String   @map("player_id") @db.VarChar(255)
+  paymentHash String   @map("payment_hash") @db.VarChar(255)
+  timeMs      Int      @map("time_ms") @db.UnsignedInt
+  createdAt   DateTime @default(now())
+  visible     Boolean  @default(true)
+  invoice     Invoice  @relation(fields: [paymentHash], references: [paymentHash])
+
+  @@index([timeMs])
+  @@index([playerId])
+  @@index([paymentHash])
+}
+
+model Invoice {
+  id          Int          @id @default(autoincrement())
+  playerId    String       @map("player_id") @db.VarChar(255)
+  paymentHash String       @unique @map("payment_hash") @db.VarChar(255)
+  bolt11      String       @map("bolt11") @db.Text
+  amountSats  Int          @map("amount_sats") @db.UnsignedInt
+  memo        String?      @db.VarChar(255)
+  status      String       @default("pending") @db.VarChar(20)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  paidAt      DateTime?    @map("paid_at")
+  collectLogs CollectLog[]
+  scores      Score[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model CollectLog {
+  id           Int       @id @default(autoincrement())
+  playerId     String    @map("player_id") @db.VarChar(255)
+  paymentHash  String    @map("payment_hash") @db.VarChar(255)
+  round        Int       @db.UnsignedSmallInt
+  timeMs       Int?      @map("time_ms") @db.UnsignedInt
+  collectTime  String?   @map("collect_time") @db.LongText
+  collectMove  String?   @map("collect_move") @db.LongText
+  collectFruit String?   @map("collect_fruit") @db.LongText
+  startPlay    DateTime  @default(now()) @map("start_play")
+  endPlay      DateTime? @map("end_play")
+  submitted    Boolean   @default(false)
+  submittedAt  DateTime? @map("submitted_at")
+  invoice      Invoice   @relation(fields: [paymentHash], references: [paymentHash])
+
+  @@unique([playerId, paymentHash, round])
+  @@index([paymentHash])
+  @@index([playerId])
+}
+
+model Account {
+  id                String  @id
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?   @db.Text
+  passwordHash  String?
+  role          User_role @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  Account       Account[]
+  Session       Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model MaintenanceConfig {
+  id                String   @id @default("main") @db.VarChar(20)
+  maintenanceMode   Boolean  @default(false) @map("maintenance_mode")
+  maintenanceWindow String   @default("02:00 - 04:00 UTC") @map("maintenance_window") @db.VarChar(120)
+  maintenanceStatus String   @default("UPGRADING NODES") @map("maintenance_status") @db.VarChar(120)
+  maintenanceNote   String   @default("กำลังอัปเกรดระบบ Lightning และประสิทธิภาพการเล่นเกม เพื่อให้ธุรกรรมเร็วและเสถียรมากขึ้น") @map("maintenance_note") @db.Text
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("maintenance_config")
+}
+
+enum User_role {
+  USER
+  ADMIN
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>เกมงูสายฟ้า ⚡</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      text-align: center;
+      margin: 0;
+    }
+    canvas {
+      margin-top: 20px;
+      background: black;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #scoreboard {
+      margin-top: 20px;
+      margin-bottom: 60px;
+      text-align: left;
+      max-width: 300px;
+      margin: 0 auto;
+      font-size: 16px;
+    }
+
+      #scoreboard h2,#scoreboard .reset-note {
+      text-align: center;
+    }
+
+    #timerDisplay, #progressDisplay {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    #startScreen, #countdownOverlay, #paywall, #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    #muteToggle {
+    font-size: 14px;
+    padding: 6px 12px;
+    margin-top: 10px;
+  }
+    input, button {
+      font-size: 16px;
+      padding: 10px;
+      margin: 5px;
+    }
+    .victory-mode {
+      background: radial-gradient(circle at center, #000 0%, #111 70%, #222 100%);
+      animation: flashBG 0.5s ease-in-out 3;
+    }
+    @keyframes flashBG {
+      0% { background-color: #0f0; }
+      50% { background-color: #111; }
+      100% { background-color: #0f0; }
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      20% { transform: translate(-1px, 2px) rotate(-1deg); }
+      40% { transform: translate(-3px, 1px) rotate(1deg); }
+      60% { transform: translate(3px, 1px) rotate(0deg); }
+      80% { transform: translate(1px, -1px) rotate(1deg); }
+      100% { transform: translate(-1px, 2px) rotate(-1deg); }
+    }
+    .shake {
+      animation: shake 0.5s;
+      animation-iteration-count: 6;
+    }
+  </style>
+
+  <style>
+  /* ✅ 1. ปรับตำแหน่งให้ไม่ติดขอบบน */
+  #overlay {
+    padding-top: 40px;
+  }
+
+  /* ✅ 2. ลดขนาดปุ่มเปิด/ปิดเสียง */
+  #overlay #muteToggle {
+    font-size: 14px;
+    padding: 6px 12px;
+    margin-top: 10px;
+  }
+
+  /* ✅ 3. จัดเลขอันดับให้อยู่แนวเดียวกัน */
+  #overlay #scoreboard div {
+    text-align: left;
+    max-width: 300px;
+    margin: 0 auto;
+    font-size: 16px;
+  }
+</style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <div id="startScreen" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center; height: 100vh; padding-top: 60px;">
+    <h1 style="font-size: 28px; margin-bottom: 10px;">⚡ <span style="font-weight: bold; color: white;">เกมงูสายฟ้า</span></h1>
+    <button onclick="prepareGameStart()" style="font-size: 18px; padding: 10px 30px; margin-bottom: 10px;">
+      <span style="font-size: 20px;">▶️</span> Start Game
+    </button>
+    <button id="muteToggle" onclick="toggleMute()" style="margin-bottom: 10px;">🔊 เปิด</button>
+    <div id="rewardInfo" style="font-size: 16px; color: white;">
+      <span style="color: gold">💰</span> เงินรางวัลสะสมเดือนนี้: <span id="poolValue" style="font-weight:bold;">0</span> sats
+      <span onclick="toggleInfoBox()" style="cursor:pointer; color: red; font-size: 20px; margin-left: 6px;">❗</span>
+    </div>
+    <div id="infoBox" style="display:none; max-width: 300px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 14px;">
+      เมื่อคุณชำระเงินเพื่อเข้าเล่น 100 sats จะถูกแบ่งดังนี้<br>
+      - 70% เป็นเงินรางวัลสำหรับผู้เล่น<br>
+      - 30% สำหรับผู้พัฒนาเกม<br>
+      💰 รางวัลหรือจะแบ่งตามอันดับ<br>
+      อันดับที่ 1 ได้ 80% ของเงินรางวัล<br>
+      อันดับที่ 2 ได้ 15% ของเงินรางวัล<br>
+      อันดับที่ 3 ได้ 5% ของเงินรางวัล
+    </div>
+    <div id="scoreboard"></div>
+  </div>
+
+
+  <h1 style="padding-top: 10px;font-size: 25px; margin-bottom: 10px;">⚡ <span style="font-weight: bold; color: white;">เกมงูสายฟ้า</span></h1>
+  <canvas id="game" width="400" height="400"></canvas>
+  <div id="timerDisplay">00:00.000</div>
+  <div id="progressDisplay">ผลไม้ที่เก็บได้: 0 / 21</div>
+  <div id="rewardInfo" style="font-size: 16px; color: white;">
+    <span style="color: gold">💰</span> เงินรางวัลสะสมเดือนนี้: <span id="poolValue" style="font-weight:bold;">0</span> sats
+  </div>
+  <button id="muteToggle" onclick="toggleMute()" style="margin-bottom: 10px;">🔊 เปิด</button>
+  <!--<div id="scoreboard"></div>-->
+
+  <div id="overlay">
+    <div style="font-weight: bold; font-size: 20px; margin-bottom: 10px;">ยินดีด้วย! คุณเก็บครบทั้ง 21 ลูก</div>
+    <div style="margin-bottom: 8px;">คุณใช้เวลา <span id="finalTime"></span></div>
+    <input id="playerName" placeholder="ใส่ Lightning Wallet ของคุณ" />
+    <button onclick="submitScore()">Enter</button>
+  </div>
+
+  <div id="paywall" style="display:none;">
+    <div>⚡ โปรดชำระ 100 sats เพื่อเข้าเล่น</div>
+    <div id="invoiceBox" style="margin: 10px; background: #333; padding: 10px;">...</div>
+  </div>
+
+  <div id="countdownOverlay" style="display: none;">
+    <div style="font-size: 20px; margin-bottom: 10px;">✅ Pay Succeed <br>เริ่มเกมใน <span id="countdownText">10</span> วินาที</div>
+    <button id="startNowBtn" onclick="startGameWrapper()">▶️ Start Now</button>
+  </div>
+
+  <audio id="collectSound" src="sound/collect.mp3"></audio>
+  <audio id="victorySound" src="sound/victory.mp3"></audio>
+  <audio id="bgm" src="sound/bgm.mp3" loop></audio>
+  <audio id="countdownSound" src="sound/countdown.mp3"></audio>
+
+  <script src="game.js"></script>
+  
+  <script>
+    function toggleInfoBox() {
+      const box = document.getElementById("infoBox");
+      box.style.display = box.style.display === "none" ? "block" : "none";
+    }
+
+    async function fetchPool() {
+      try {
+        const res = await fetch("http://localhost:3000/get-pool");
+        const data = await res.json();
+        document.querySelectorAll("#poolValue").forEach(el => el.innerText = data.total);
+      } catch (err) {
+        console.error("ไม่สามารถโหลด pool ได้:", err);
+      }
+    }
+
+   // ✅ แก้ฟังก์ชัน loadLeaderboard เพื่อให้แสดงอันดับได้ถูกต้อง
+    async function loadLeaderboard() {
+    try {
+      const res = await fetch("http://localhost:3000/leaderboard");
+      const data = await res.json();
+
+    if (!data || !data.leaderboard || data.leaderboard.length === 0) {
+      document.querySelectorAll("#scoreboard").forEach(el => {
+        el.innerHTML = `<h2 style="text-align: center;">🏆 อันดับผู้เล่น 🏆</h2><p style="text-align: center;">ยังไม่มีข้อมูล</p>`;
+      });
+      return;
+    }
+
+    const html = `<h2 style="text-align: center;">🏆 อันดับผู้เล่น 🏆</h2><div style="text-align: center;">* Reset อันดับทุกวันที่ 21 ของทุกเดือน</div><br>` +
+      data.leaderboard.map((s, i) => {
+        const mins = String(Math.floor(s.time / 60000)).padStart(2, '0');
+        const secs = String(Math.floor((s.time % 60000) / 1000)).padStart(2, '0');
+        const ms = String(s.time % 1000).padStart(3, '0');
+        return `<div>${i + 1}. ${s.name} - ${mins}:${secs}.${ms}</div>`;
+      }).join("");
+
+    document.querySelectorAll("#scoreboard").forEach(el => el.innerHTML = html);
+  } catch (err) {
+    console.error("โหลดอันดับไม่ได้:", err);
+  }
+}
+
+
+    function startGameWrapper() {
+      fetchPool();
+      loadLeaderboard();
+      
+    }
+
+    // เรียกข้อมูลตอนแสดง overlay ด้วย
+    function showEndOverlay() {
+    fetchPool();
+    loadLeaderboard();
+    document.getElementById("overlay").style.display = "flex";
+  }
+
+    // ✅ อัปเดตปุ่มเสียงทั้งหน้าแรกและตอนเล่นเกม
+    function toggleMute() {
+      isMuted = !isMuted;
+      const bgm = document.getElementById("bgm");
+      const collect = document.getElementById("collectSound");
+      const victory = document.getElementById("victorySound");
+      if (bgm) bgm.muted = isMuted;
+      if (collect) collect.muted = isMuted;
+      if (victory) victory.muted = isMuted;
+
+      document.querySelectorAll("#muteToggle").forEach(btn => {
+        btn.innerText = isMuted ? "🔇 ปิด" : "🔊 เปิด";
+      });
+    }
+
+  </script>
+</body>
+</html>

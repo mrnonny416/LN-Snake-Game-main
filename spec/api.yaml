@@ -1,0 +1,174 @@
+openapi: 3.0.3
+info:
+  title: LNBits Snake Game API
+  description: |
+    Backend API สำหรับ Snake Game ที่ใช้ Lightning Network (LNBits)
+    - สร้าง invoice
+    - ตรวจสอบการชำระเงิน
+    - ส่งคะแนน
+    - แสดง leaderboard
+    - แสดง prize pool
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+tags:
+  - name: payment
+    description: Lightning payment via LNBits
+  - name: game
+    description: Game & score related endpoints
+  - name: leaderboard
+    description: Player ranking
+
+paths:
+  /payments/invoice:
+    post:
+      tags: [payment]
+      summary: Create Lightning invoice
+      description: สร้าง invoice สำหรับปลดล็อก Snake Game (100 sats)
+      operationId: createInvoice
+      responses:
+        "200":
+          description: Invoice created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceResponse"
+        "500":
+          description: Failed to create invoice
+
+  /payments/{paymentHash}/status:
+    get:
+      tags: [payment]
+      summary: Check payment status
+      description: ตรวจสอบว่า invoice ถูกชำระแล้วหรือยัง
+      operationId: checkPaymentStatus
+      parameters:
+        - name: paymentHash
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Payment status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentStatus"
+        "400":
+          description: Missing payment hash
+        "500":
+          description: Failed to check payment
+
+  /game/score:
+    post:
+      tags: [game]
+      summary: Submit player score
+      description: บันทึกคะแนนผู้เล่น (เวลาที่ใช้เล่น)
+      operationId: submitScore
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScoreRequest"
+      responses:
+        "200":
+          description: Updated leaderboard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardResponse"
+        "400":
+          description: Invalid input
+
+  /leaderboard:
+    get:
+      tags: [leaderboard]
+      summary: Get top players
+      description: ดึงอันดับผู้เล่น Top 10
+      operationId: getLeaderboard
+      responses:
+        "200":
+          description: Leaderboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardResponse"
+
+  /pool:
+    get:
+      tags: [game]
+      summary: Get prize pool
+      description: |
+        ดึงยอดเงินรางวัล (70% ของ wallet balance หลังหักค่าเล่น)
+      operationId: getPrizePool
+      responses:
+        "200":
+          description: Pool amount in sats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PoolResponse"
+        "500":
+          description: Failed to fetch wallet balance
+
+components:
+  schemas:
+    InvoiceResponse:
+      type: object
+      properties:
+        payment_request:
+          type: string
+          description: Lightning BOLT11 invoice
+          example: lnbc100n1p...
+        payment_hash:
+          type: string
+          example: 8a9f0b3c...
+
+    PaymentStatus:
+      type: object
+      properties:
+        paid:
+          type: boolean
+          example: true
+
+    ScoreRequest:
+      type: object
+      required: [name, time]
+      properties:
+        name:
+          type: string
+          example: PlayerOne
+        time:
+          type: number
+          description: Time in seconds
+          example: 42.3
+
+    LeaderboardEntry:
+      type: object
+      properties:
+        name:
+          type: string
+          example: PlayerOne
+        time:
+          type: number
+          example: 42.3
+
+    LeaderboardResponse:
+      type: object
+      properties:
+        leaderboard:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaderboardEntry"
+
+    PoolResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Prize pool in sats
+          example: 350

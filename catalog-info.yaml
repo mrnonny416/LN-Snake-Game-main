@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ln-snake-game
+  description: lnbit snake game
+spec:
+  type: website
+  lifecycle: production
+  owner: user:guest

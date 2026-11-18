@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bitcoin Payment Confirmation</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=VT323&amp;family=Kanit:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              retro: {
+                yellow: "#FFD700",
+                purple: "#6A0DAD",
+                green: "#32CD32",
+                pink: "#FF00FF",
+                dark: "#1A1A2E",
+                light: "#FFF8E7",
+                border: "#000000",
+              },
+              primary: "#6A0DAD",
+              secondary: "#32CD32",
+              "bitcoin-orange": "#F7931A",
+            },
+            fontFamily: {
+              display: ["'Press Start 2P'", "cursive"],
+              body: ["'VT323'", "monospace"],
+              thai: ["Kanit", "sans-serif"],
+            },
+            backgroundImage: {
+              "grid-pattern":
+                "linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px)",
+            },
+            boxShadow: {
+              retro: "4px 4px 0px 0px #000000",
+              "retro-lg": "8px 8px 0px 0px #000000",
+              "retro-active": "2px 2px 0px 0px #000000",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "VT323", "Kanit", monospace;
+        -webkit-font-smoothing: antialiased;
+        background-color: #ffd700;
+        background-size: 40px 40px;
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      .retro-font {
+        font-family: "Press Start 2P", "Kanit", cursive;
+        line-height: 1.5;
+      }
+      .text-stroke {
+        -webkit-text-stroke: 1.5px black;
+        text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+      }
+      .wiggle:hover {
+        animation: wiggle 0.5s ease-in-out infinite;
+      }
+      @keyframes wiggle {
+        0% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-3deg);
+        }
+        50% {
+          transform: rotate(3deg);
+        }
+        75% {
+          transform: rotate(-1deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+      .pixel-borders {
+        box-shadow:
+          -4px 0 0 0 black,
+          4px 0 0 0 black,
+          0 -4px 0 0 black,
+          0 4px 0 0 black;
+        margin: 4px;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="text-retro-dark relative flex min-h-screen flex-col items-center overflow-x-hidden pb-10"
+  >
+    <div class="pointer-events-none fixed top-0 left-0 z-0 h-full w-full overflow-hidden">
+      <span
+        class="material-symbols-outlined text-retro-purple absolute top-[10%] left-[5%] -rotate-12 transform text-6xl opacity-20"
+        >videogame_asset</span
+      >
+      <span
+        class="material-symbols-outlined text-retro-green absolute right-[5%] bottom-[20%] rotate-12 transform text-6xl opacity-20"
+        >stadia_controller</span
+      >
+      <span
+        class="material-symbols-outlined text-retro-pink absolute top-[40%] right-[10%] text-5xl opacity-20"
+        >sports_esports</span
+      >
+      <div
+        class="font-display pointer-events-none absolute top-20 left-1/2 -translate-x-1/2 transform text-[150px] font-bold whitespace-nowrap text-black opacity-[0.05] select-none"
+      >
+        PAYMENT
+      </div>
+    </div>
+    <div
+      class="relative z-10 mx-auto flex w-full max-w-md flex-grow flex-col items-center px-4 pt-8"
+    >
+      <div class="relative mb-6 w-full text-center">
+        <div class="relative inline-block">
+          <h1
+            class="text-retro-purple text-stroke mb-2 -rotate-2 transform text-2xl leading-relaxed font-bold md:text-3xl"
+          >
+            CONFIRM<br />PAYMENT
+          </h1>
+          <div class="absolute -top-6 -right-8 animate-bounce text-4xl">🪙</div>
+        </div>
+        <div
+          class="font-body shadow-retro mt-2 inline-block rotate-1 transform border-2 border-white bg-black px-4 py-1 text-3xl text-red-500"
+        >
+          <span class="animate-pulse">⏱ 14:59</span>
+        </div>
+      </div>
+      <div
+        class="bg-retro-dark shadow-retro-lg relative mb-8 w-full border-4 border-black p-6 text-center"
+      >
+        <div
+          class="bg-retro-yellow absolute top-0 left-0 h-4 w-4 border-r-4 border-b-4 border-black"
+        ></div>
+        <div
+          class="bg-retro-green absolute top-0 right-0 h-4 w-4 border-b-4 border-l-4 border-black"
+        ></div>
+        <div
+          class="bg-retro-pink absolute bottom-0 left-0 h-4 w-4 border-t-4 border-r-4 border-black"
+        ></div>
+        <div
+          class="bg-retro-purple absolute right-0 bottom-0 h-4 w-4 border-t-4 border-l-4 border-black"
+        ></div>
+        <div class="relative z-10 flex flex-col items-center">
+          <div
+            class="bg-retro-green/10 border-retro-green mb-6 w-full -rotate-1 transform rounded border-2 border-dashed p-3"
+          >
+            <p class="text-retro-light font-body mb-0 text-xl">AMOUNT DUE</p>
+            <div
+              class="text-retro-green font-display text-stroke text-5xl font-bold tracking-widest"
+            >
+              100 SATS
+            </div>
+          </div>
+          <div class="group relative mb-6">
+            <div class="shadow-retro inline-block border-4 border-black bg-white p-3">
+              <img
+                alt="Payment QR"
+                class="image-rendering-pixelated h-48 w-48 mix-blend-multiply"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPKgNnQQylqQErkJsycOpFPPVjCPNDxjhKb9-nn7vBVf6FILSeuY3u_3N2qYrTVc-KgXHGJGtmFpeN5-d4JNHz0g8uwYaY8WlMq3GRevXHJuisvEHEwjU4U_dsGNvgI0op2qpJZXOU7pgRjfV3vBCqFvfDM3iOJhP01HSpatnGhFq48HYufDbQRl62yUC8DEAs7A9hnDHwtNVtVkmClYiHmfT_T87ajqZwqAxFk6divD1WBLLKrbGZaxvSNWTle5EAB_ydxtfoGZ1I"
+              />
+            </div>
+            <div
+              class="bg-retro-yellow absolute -right-4 -bottom-4 rotate-6 transform border-2 border-black px-2 py-1 shadow-sm"
+            >
+              <span class="font-display text-[10px] text-black uppercase">Scan Me!</span>
+            </div>
+          </div>
+          <div class="mb-4 w-full text-left">
+            <label
+              class="text-retro-light font-display mb-2 block text-center text-[10px] tracking-wider uppercase"
+              >Wallet Address / Hash</label
+            >
+            <div
+              class="group hover:border-retro-yellow flex cursor-pointer items-center justify-between gap-2 border-2 border-gray-600 bg-black p-2 shadow-inner transition-colors"
+            >
+              <code class="text-retro-green font-body truncate text-lg select-all"
+                >bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</code
+              >
+              <span
+                class="material-symbols-outlined group-hover:text-retro-yellow text-lg text-gray-400"
+                >content_copy</span
+              >
+            </div>
+          </div>
+          <div class="font-body flex items-center justify-center gap-2 text-sm text-gray-400">
+            <span class="bg-retro-pink h-2 w-2 animate-ping rounded-full"></span>
+            Waiting for transaction...
+          </div>
+        </div>
+      </div>
+      <div class="mb-8 w-full">
+        <div
+          class="shadow-retro flex rotate-1 transform items-center justify-between gap-4 border-4 border-black bg-white p-3"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="bg-bitcoin-orange flex h-8 w-8 items-center justify-center border-2 border-black font-bold text-white"
+            >
+              B
+            </div>
+            <div>
+              <h4 class="font-display text-xs font-bold text-black uppercase">Network</h4>
+              <p class="font-body text-lg leading-none text-black">Bitcoin Mainnet</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <h4 class="font-display text-xs font-bold text-black uppercase">Fee</h4>
+            <p class="font-body text-lg leading-none text-black">~5 Sats/vB</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-auto w-full space-y-4 pb-4">
+        <button
+          class="bg-retro-green font-display shadow-retro hover:shadow-retro-lg active:shadow-retro-active group relative w-full transform overflow-hidden border-4 border-black py-4 text-sm tracking-widest text-black transition-all duration-100 hover:-translate-y-1 active:translate-y-0"
+        >
+          <span class="relative z-10 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-xl">check_circle</span>
+            I SENT THE PAYMENT
+          </span>
+          <div
+            class="absolute inset-0 -translate-x-full skew-x-12 transform bg-white/20 transition-transform duration-300 group-hover:translate-x-0"
+          ></div>
+        </button>
+        <button
+          class="bg-retro-pink font-display shadow-retro hover:shadow-retro-lg active:shadow-retro-active w-full transform border-4 border-black py-3 text-xs tracking-widest text-white transition-all duration-100 hover:-translate-y-1 active:translate-y-0"
+        >
+          CANCEL ORDER
+        </button>
+      </div>
+      <footer class="font-body mt-8 text-center text-sm text-black/60">
+        <p>Order ID: #GAME-8821-SNAKE</p>
+        <p class="mt-1 text-xs opacity-75">Do not close this window until confirmed.</p>
+      </footer>
+    </div>
+  </body>
+</html>

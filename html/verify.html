@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Order Confirmed - Sats In!</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=VT323&amp;family=Kanit:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              retro: {
+                yellow: "#FFD700",
+                purple: "#6A0DAD",
+                green: "#32CD32",
+                pink: "#FF00FF",
+                dark: "#1A1A2E",
+                light: "#FFF8E7",
+                border: "#000000",
+              },
+              primary: "#6A0DAD",
+              secondary: "#32CD32",
+              "bitcoin-orange": "#F7931A",
+            },
+            fontFamily: {
+              display: ["'Press Start 2P'", "cursive"],
+              body: ["'VT323'", "monospace"],
+              thai: ["Kanit", "sans-serif"],
+            },
+            backgroundImage: {
+              "grid-pattern":
+                "linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px)",
+            },
+            boxShadow: {
+              retro: "4px 4px 0px 0px #000000",
+              "retro-lg": "8px 8px 0px 0px #000000",
+              "retro-active": "2px 2px 0px 0px #000000",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "VT323", "Kanit", monospace;
+        -webkit-font-smoothing: antialiased;
+        background-color: #ffd700;
+        background-size: 40px 40px;
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      .retro-font {
+        font-family: "Press Start 2P", "Kanit", cursive;
+        line-height: 1.5;
+      }
+      .text-stroke {
+        -webkit-text-stroke: 1.5px black;
+        text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+      }
+      .wiggle:hover {
+        animation: wiggle 0.5s ease-in-out infinite;
+      }
+      @keyframes wiggle {
+        0% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-3deg);
+        }
+        50% {
+          transform: rotate(3deg);
+        }
+        75% {
+          transform: rotate(-1deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+      @keyframes drop-in {
+        0% {
+          transform: translateY(-50px) scale(0.8);
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        70% {
+          transform: translateY(10px);
+        }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+      .animate-drop {
+        animation: drop-in 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="text-retro-dark relative flex min-h-screen flex-col items-center overflow-x-hidden pb-10"
+  >
+    <div class="pointer-events-none fixed top-0 left-0 z-0 h-full w-full overflow-hidden">
+      <span
+        class="material-symbols-outlined text-retro-purple absolute top-[10%] left-[5%] -rotate-12 transform text-6xl opacity-20"
+        >videogame_asset</span
+      >
+      <span
+        class="material-symbols-outlined text-retro-green absolute right-[5%] bottom-[20%] rotate-12 transform text-6xl opacity-20"
+        >stadia_controller</span
+      >
+      <span
+        class="material-symbols-outlined text-retro-pink absolute top-[40%] right-[10%] text-5xl opacity-20"
+        >sports_esports</span
+      >
+      <div
+        class="font-display pointer-events-none absolute top-20 left-1/2 -translate-x-1/2 transform text-[150px] font-bold whitespace-nowrap text-black opacity-[0.05] select-none"
+      >
+        SUCCESS
+      </div>
+    </div>
+    <div
+      class="relative z-10 mx-auto flex w-full max-w-md flex-grow flex-col items-center px-4 pt-8"
+    >
+      <div class="relative mb-6 w-full text-center">
+        <div class="relative inline-block">
+          <h1
+            class="text-retro-purple text-stroke mb-2 -rotate-2 transform text-2xl leading-relaxed font-bold md:text-3xl"
+          >
+            PAYMENT<br />CONFIRMED!
+          </h1>
+          <div class="absolute -top-6 -right-8 animate-bounce text-4xl">✨</div>
+          <div
+            class="absolute -bottom-2 -left-4 animate-bounce text-4xl"
+            style="animation-delay: 0.2s"
+          >
+            ✨
+          </div>
+        </div>
+      </div>
+      <div
+        class="bg-retro-dark shadow-retro-lg relative mb-8 w-full border-4 border-black p-6 text-center"
+      >
+        <div
+          class="bg-retro-yellow absolute top-0 left-0 h-4 w-4 border-r-4 border-b-4 border-black"
+        ></div>
+        <div
+          class="bg-retro-green absolute top-0 right-0 h-4 w-4 border-b-4 border-l-4 border-black"
+        ></div>
+        <div
+          class="bg-retro-pink absolute bottom-0 left-0 h-4 w-4 border-t-4 border-r-4 border-black"
+        ></div>
+        <div
+          class="bg-retro-purple absolute right-0 bottom-0 h-4 w-4 border-t-4 border-l-4 border-black"
+        ></div>
+        <div class="relative z-10 flex flex-col items-center">
+          <div
+            class="bg-retro-green/20 border-retro-green mb-6 w-full rotate-1 transform rounded border-2 p-2"
+          >
+            <p
+              class="text-retro-green font-display mb-0 flex items-center justify-center gap-2 text-xl font-bold"
+            >
+              <span class="material-symbols-outlined">check_circle</span> SUCCESS
+            </p>
+          </div>
+          <div class="relative mb-8 flex h-48 w-full items-center justify-center">
+            <div class="animate-drop absolute top-0 z-20 flex flex-col items-center">
+              <span class="font-display text-retro-yellow text-stroke mb-1 text-xl">+100 SATS</span>
+              <div
+                class="bg-bitcoin-orange flex h-16 w-16 items-center justify-center rounded-full border-4 border-black shadow-lg"
+              >
+                <span class="font-display text-3xl font-bold text-white">₿</span>
+              </div>
+            </div>
+            <div class="absolute bottom-0 z-10 pt-10">
+              <div class="bg-retro-purple relative h-16 w-32 border-4 border-black">
+                <div
+                  class="bg-retro-purple absolute -top-4 left-0 h-4 w-full skew-x-12 border-x-4 border-t-4 border-black opacity-50"
+                ></div>
+                <div class="flex h-full w-full items-center justify-center">
+                  <div class="bg-retro-yellow h-8 w-8 rounded-full border-2 border-black"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-6 w-full text-center">
+            <p class="font-body mb-2 text-2xl leading-none text-white">Sats In!</p>
+            <p class="text-retro-light font-body text-lg opacity-80">
+              Your payment has been received and 100 sats have been added to your prize pool.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mb-8 w-full">
+        <div
+          class="shadow-retro flex -rotate-1 transform items-center justify-between gap-4 border-4 border-black bg-white p-3"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="bg-retro-green flex h-10 w-10 items-center justify-center border-2 border-black text-black"
+            >
+              <span class="material-symbols-outlined">account_balance_wallet</span>
+            </div>
+            <div>
+              <h4 class="font-display text-xs font-bold text-black uppercase">New Balance</h4>
+              <p class="font-body text-xl leading-none text-black">1,250 Sats</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-retro-green animate-pulse text-xl font-bold">Ready!</span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-auto w-full space-y-4 pb-4">
+        <button
+          class="bg-retro-green font-display shadow-retro hover:shadow-retro-lg active:shadow-retro-active group relative w-full transform overflow-hidden border-4 border-black py-4 text-sm tracking-widest text-black transition-all duration-100 hover:-translate-y-1 active:translate-y-0"
+        >
+          <span class="relative z-10 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-xl">sports_esports</span>
+            CONTINUE TO GAME
+          </span>
+          <div
+            class="absolute inset-0 -translate-x-full skew-x-12 transform bg-white/20 transition-transform duration-300 group-hover:translate-x-0"
+          ></div>
+        </button>
+        <button
+          class="bg-retro-pink font-display shadow-retro hover:shadow-retro-lg active:shadow-retro-active flex w-full transform items-center justify-center gap-2 border-4 border-black py-3 text-xs tracking-widest text-white transition-all duration-100 hover:-translate-y-1 active:translate-y-0"
+        >
+          <span class="material-symbols-outlined text-sm">receipt_long</span>
+          VIEW TRANSACTION DETAILS
+        </button>
+      </div>
+      <footer class="font-body mt-8 text-center text-sm text-black/60">
+        <p>Order ID: #GAME-8821-SNAKE</p>
+        <p class="mt-1 text-xs opacity-75">Thank you for playing!</p>
+      </footer>
+    </div>
+  </body>
+</html>
